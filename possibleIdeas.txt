@@ -1,0 +1,12 @@
+
+-Google Maps API
+
+-FLASK
+
+-JQUERY
+
+-AJAX
+
+-SQLite
+
+-Tweepy
