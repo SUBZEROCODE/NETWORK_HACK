@@ -1,56 +1,71 @@
 <html>
 
 	<head>
-		  <link rel="stylesheet" type="text/css" href="simple.css">
+	
+		<style>
+		html {
+			height: 100%;
+		}
+		body {
+			height:100%;
+			margin:0;
+			padding:0;
+		}
+		#googleMap {
+			min-width: 100%;
+			min-height: 100%;
+		}	
+		</style>
+
 		  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeRMHbFG2XGbH9sAmKMbxHkgahicuMZOY"></script>
 		  
 	</head>
 
 	<body>
-			<script type="type/javascript">
+		<script type="text/javascript">
+			var mapOptions = {
+				center: {lat: 51.481415, lng: -3.178947},
+				zoom: 10
+			};
 
-					var map
+			var generic_image = new google.maps.MarkerImage(
+			    "static/cartoon.png",
+			    null, /* size is determined at runtime */
+			    null, /* origin is 0,0 */
+			    null, /* anchor is bottom center of the scaled image */
+				new google.maps.Size(40, 60));
 
-					var mapOptions {
-						center: {lat:51.481415 , lng: -3.178947},
-						zoom:100
-					};
+			var map;
 
-					function initialise(){
-						map = new google.maps.Map(document.getElementByID("googleMap"),mapOptions);
+			function initialize() {
+				map = new google.maps.Map(document.getElementById("googleMap"), mapOptions);
+			}
+
+			function loadMarker() {
+				var xhr = new XMLHttpRequest();
+				xhr.open("POST", "/updateMap", true);
+				xhr.onreadystatechange = function () {
+					if(xhr.readyState == 4 && xhr.status == 200) {
+						var response = JSON.parse(xhr.responseText);
+						var marker = new google.maps.Marker({
+							position: new google.maps.LatLng(response.latitude, response.longitude),
+								title: "Matthew's school of Computer Science",
+							icon: generic_image
+						});
+						marker.setMap(map);
 					}
+				}
+				xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhr.send("")
 
-					var marker;
+			}
 
-					function loadMarker():
-						var xhr = new XMLHttpRequest();
-						xhr.open("POST", "/updateMap", true);
-						xhr.onreadystatechange = function(){
-							if (xhr.readyState == 4 && xhr.status  ==200){
+			google.maps.event.addDomListener(window, 'load', initialise)
+		</script>
+			<button type="button" onclick="loadMarker()">Update</button>
 
-								var response = JSON.parse(xhr.responseText);
-							}
-
-							var marker = new google.maps.Marker({
-								position: new google.maps.LatLng(response.latitude, response.longitude),
-								title: "COMSC building",
-								icon: generic_image
-							});
-
-							marker.setMap(map)
-						}
-					}
-						xhr.setRequestHeader("Content-type", "application/ x-www-form-urlencoded");
-						xhr.sencd("")
-
-					google.maps.event.addDomListener(window, 'load', initialise);
-
-			</script>
-			<button type = "button" style="height:200px;width:200px"
-
-			<div id="googleMap">test</div>
+			<div id="googleMap"></div>
 
 	</body>
-
 
 </html>
