@@ -1,0 +1,27 @@
+from flask import Flask, render_template
+import json
+
+#create an instance of Flask
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+	return "Hello World!"
+
+@app.route("/displayMap")
+def displayMap():
+	return render_template("frontend.html")
+
+@app.route("/updateMap", methods=["POST"])
+def updateMap():
+
+	latArray = [51.2, 53.4, 104.2 ]
+
+	longArray = [53.3, 92.3, 72.3]
+
+	lat = 51.484321
+	longi = -3.1717929
+	return json.dumps({'latitude': latArray, 'longitude': longArray})
+
+if __name__ == '__main__':
+	app.run(debug=True)
